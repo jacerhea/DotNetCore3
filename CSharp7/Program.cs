@@ -12,10 +12,10 @@ namespace CSharp7
     {
         static async Task Main()
         {
-            var results = Enumerable.Range(0, 10)
-                .Select(async input => await CalculateResult(input ))
-                .Select(async x => await x)
-                .ToList();
+            foreach (var task in GenerateStreamOfTasks())
+            {
+                var result = await task;
+            }
 
         }
 
@@ -28,19 +28,27 @@ namespace CSharp7
         //        yield return i;
         //    }
         //}
-
-        //public static IEnumerable<Task<int>> GenerateStreamOfTasks()
+        //public static async  IEnumerable<Task<int>> GenerateStreamOfTasks()
         //{
         //    var tasks = new List<Task<int>>();
         //    for (int i = 0; i < 20; i++)
         //    {
-        //        yield return Task.Run(async () =>
-        //        {
-        //            await Task.Delay(100);
-        //            return i;
-        //        });
+        //        yield await Task.Delay(100);
         //    }
         //}
+
+        public static IEnumerable<Task<int>> GenerateStreamOfTasks()
+        {
+            var tasks = new List<Task<int>>();
+            for (int i = 0; i < 20; i++)
+            {
+                yield return Task.Run(async () =>
+                {
+                    await Task.Delay(100);
+                    return i;
+                });
+            }
+        }
 
 
         public static void OldSwitches()

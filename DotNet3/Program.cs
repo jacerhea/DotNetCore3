@@ -39,7 +39,8 @@ namespace CSharp8
             AutoDisposal();
 
             // Null reference types
-            NullableReferenceTypes();
+            var returnValue = NullableReferenceTypes();
+            //var x = returnValue.Length;
 
             //Ranges and Indices
             Ranges();
@@ -48,32 +49,6 @@ namespace CSharp8
             NullCoalescing();
         }
 
-        private static void NullCoalescing()
-        {
-            // lots of existing compound assignment operators.
-            var value = 6;
-            value += 4;
-            value -= 4;
-            value *= 4;
-            value /= 4;
-            uint a = 0b_1111_1000;
-            a ^= 0b_1000_0000;
-
-            // new one!
-            List<int> numbers = null;
-            numbers ??= new List<int>();
-
-            // instead of 
-            numbers = numbers ?? new List<int>();
-
-            int? i = null;
-
-            numbers.Add(i ??= 17);
-            numbers.Add(i ??= 20);
-
-            Console.WriteLine(string.Join(" ", numbers));  // output: 17 17
-            Console.WriteLine(i);  // output: 17
-        }
 
         public static async System.Collections.Generic.IAsyncEnumerable<int> GenerateStream()
         {
@@ -108,7 +83,7 @@ namespace CSharp8
         public static decimal SwitchByProperty(Address location, decimal salePrice) =>
             location switch
             {
-                { State: "WA" } => salePrice * 0.06M,
+                { City: "WA" } => salePrice * 0.06M,
                 { State: "MN" } => salePrice * 0.75M,
                 { State: "MI" } => salePrice * 0.05M,
                 // other cases removed for brevity...
@@ -126,9 +101,10 @@ namespace CSharp8
             }
         }
 
-        static void NullableReferenceTypes()
+        static string? NullableReferenceTypes()
         {
-            string s = null;
+            string? s = null;
+            return s;
         }
 
         static void Ranges()
@@ -148,25 +124,54 @@ namespace CSharp8
             range = ..;
             range = 1..;
             range = ^2..^1;
-
-            foreach (var value in (1..10).GetSet())
-            {
-                Console.Write(value);
-            }
+            range = 1..4;
 
             foreach (var item in techArray[range])
             {
                 Console.WriteLine(item);  //C++ C# F#
             }
 
-            foreach (var item in techArray[1..5])
+            foreach (var item in techArray[1..4])
             {
                 Console.WriteLine(item);  //C++ C# F#
             }
 
             var lastNewWay = techArray[^1];
             Console.WriteLine("New way : " + lastNewWay + "(techArray[^1])");  //GraphQL
+
+            foreach (var value in range.GetSet())
+            {
+                Console.Write(value);
+            }
         }
+
+        private static void NullCoalescing()
+        {
+            // lots of existing compound assignment operators.
+            var value = 6;
+            value += 4;
+            value -= 4;
+            value *= 4;
+            value /= 4;
+            uint a = 0b_1111_1000;
+            a ^= 0b_1000_0000;
+
+            // new one!
+            List<int> numbers = null;
+            numbers ??= new List<int>();
+
+            // instead of 
+            numbers = numbers ?? new List<int>();
+
+            int? i = null;
+
+            numbers.Add(i ??= 17);
+            numbers.Add(i ??= 20);
+
+            Console.WriteLine(string.Join(" ", numbers));  // output: 17 17
+            Console.WriteLine(i);  // output: 17
+        }
+
 
     }
 

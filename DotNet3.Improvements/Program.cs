@@ -15,6 +15,10 @@ namespace DotNet3.Improvements
             PrintJson(File.ReadAllBytes("launch.json").AsSpan());
 
             ReadJson(File.ReadAllText("launch.json"));
+
+            // http client
+            Http2PerMessage();
+            Http2PerClient();
         }
 
         public static void PrintJson(ReadOnlySpan<byte> dataUtf8)
@@ -64,19 +68,14 @@ namespace DotNet3.Improvements
             using var document = JsonDocument.Parse(jsonString);
 
             var root = document.RootElement;
-            var version = root.GetProperty("version").GetString();
-            var configurations = root.GetProperty("configurations");
+            var properties = root.GetProperty("properties");
 
-            Console.WriteLine($"Launch Version: {version}");
+            var title = root.GetProperty("title");
 
-            foreach (var config in configurations.EnumerateArray())
-            {
-                var name = config.GetProperty("name").GetString();
-                Console.WriteLine($"Config: {name}");
-            }
+            Console.WriteLine($"Title: {title}");
         }
 
-        public static async Task Gdsafdsa()
+        public static async Task Http2PerMessage()
         {
             var client = new HttpClient() { BaseAddress = new Uri("https://localhost:5001") };
 
@@ -90,7 +89,7 @@ namespace DotNet3.Improvements
                 Console.WriteLine(response.Content);
         }
 
-        public static async Task efaultVersion()
+        public static async Task Http2PerClient()
         {
             var client = new HttpClient()
             {
